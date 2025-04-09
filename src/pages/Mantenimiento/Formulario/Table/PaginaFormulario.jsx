@@ -63,17 +63,31 @@ export function PaginaFormulario() {
         setSelectFalla(_selectedFalla);
         setOperacionSeleccionada(_selectedFalla.map(item => item.name).join(', '));
     };
+    const resetForm = () => {
+        setUnidadSeleccionada(null);
+        setKilometraje('');
+        setHorometro('');
+        setFechaHora('');
+        setTipoFallaSeleccionada(null);
+        setDescripcionFalla('');
+        setUbicacionFalla('');
+        setOperacionSeleccionada(null);
+        setSelectedCategories([]);
+        setSelectFalla([]);
+        setPersonalSeleccionado(null);
+    };
+    
 
     const handleConfirmar = async () => {
         if (!fechaHora) return;
-
+    
         const year = fechaHora.getFullYear();
         const month = String(fechaHora.getMonth() + 1).padStart(2, '0');
         const day = String(fechaHora.getDate()).padStart(2, '0');
         const hours = String(fechaHora.getHours()).padStart(2, '0');
         const minutes = String(fechaHora.getMinutes()).padStart(2, '0');
         const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}`;
-
+    
         const respuestas = [
             unidadSeleccionada,
             kilometraje,
@@ -84,15 +98,20 @@ export function PaginaFormulario() {
             ubicacionFalla,
             operacionSeleccionada,
         ];
-
+    
         const objetoEnviar = {
             personal_id: personalSeleccionado,
             respuestas: respuestas
         };
-        const response = await Create(objetoEnviar)
-        console.log(response)
-        console.log(objetoEnviar)
+    
+        const response = await Create(objetoEnviar);
+        console.log(response);
+        console.log(objetoEnviar);
+    
+        // 🧹 Limpiar formulario
+        resetForm();
     };
+    
 
 
     return (
